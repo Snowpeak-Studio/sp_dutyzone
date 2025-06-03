@@ -56,10 +56,6 @@ lib.callback.register('sp_dutyzone:toggleDuty', function(source, group, dutyType
     if not character then
         return false, locale('error.invalid_player', source)
     end
-    -- Check if parameters are valid
-    if not source or not group or not dutyType or not zoneName then
-        return false, locale('error.invalid_parameters')
-    end
     -- Check if player has the primary group
     if not Qbox:HasPrimaryGroup(source, group) then
         return false, locale('error.invalid_group_permission', group)
