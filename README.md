@@ -20,12 +20,12 @@ This resource requires the following dependencies:
 1. Ensure all dependencies are installed and working properly
 2. Copy the `sp_dutyzone` folder to your server's resources directory
 3. Add `ensure sp_dutyzone` to your server.cfg file after ensuring all dependencies
-4. Configure the settings in the config.lua file to match your server's needs
+4. Configure the settings in the data/config.lua file to match your server's needs
 5. Restart your server
 
 ## Configuration
 
-The resource uses a configuration file (`config.lua`) where you can set up:
+The resource uses a configuration file (`data/config.lua`) where you can set up:
 
 - Zones for specific groups/jobs to then toggle duty for them.
 
