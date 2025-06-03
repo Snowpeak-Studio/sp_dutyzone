@@ -49,7 +49,6 @@ function OnExit(self)
         return
     elseif result then
         local jobData = QBX.PlayerData.job
-        print(json.encode(jobData, { indent = true }))
         lib.notify({
             title = locale('duty.title'),
             description = locale('duty.off', jobData?.label, jobData?.grade.name),
