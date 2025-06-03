@@ -1,0 +1,21 @@
+{
+    "duty": {
+        "title": "Duty",
+        "on": "You are now on duty for %s as %s!",
+        "off": "You are now off duty for %s as %s!",
+        "toggled_on": "%s is now on duty for %s, %s!",
+        "toggled_off": "%s is now off duty for %s, %s!"
+    },
+    "error": {
+        "failed": "Failed to toggle duty",
+        "invalid_config": "Invalid configuration for retrieval location %s",
+        "invalid_job": "Invalid job %s",
+        "invalid_player": "Invalid player %s",
+        "invalid_parameters": "Invalid parameter",
+        "invalid_group_permission": "You do not have permission to toggle duty for group %s",
+        "invalid_zone": "Zone not found! Zone: %s",
+        "invalid_group_zone": "You do not have permission to toggle duty for group %s in zone %s",
+        "invalid_duty_type": "Invalid duty type %s",
+        "not_in_zone": "Player is not inside the duty zone"
+    }
+}
