@@ -1,5 +1,5 @@
 return {
-    debug = true, -- enable debug for ox_lib zones
+    debug = false, -- enable debug for ox_lib zones
     zones = {     -- Poly zone reference to docs https://overextended.dev/ox_lib/Modules/Zones/Shared
         {
             points = {
@@ -14,5 +14,6 @@ return {
             group = 'catcafe',
             dutyType = 'both', -- 'enter', 'exit', 'both' -- Enter is if you want it to toggle duty on when entering but not off exiting, exit is the opposite, both is when you want it to toggle duty on both entering and exiting
         },
+        
     },
 }
