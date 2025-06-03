@@ -82,5 +82,29 @@ local function init()
     end
 end
 
+--- Function to handle cleanup when the resource stops
+local function onStop()
+    for _, zone in pairs(client.zones) do
+        zone:remove()
+    end
+    client.zones = {}
+end
+
 ---[[ Initialization ]]
-init()
+AddEventHandler('onClientResourceStart', function(resource)
+	if resource == GetCurrentResourceName() then
+		   init()
+	end
+ 
+end)
+
+--- [[ Cleanup ]]
+AddEventHandler('onClientResourceStop', function(resource)
+	if resource == GetCurrentResourceName() then
+        onStop()
+	end
+end)
+
+
+
+

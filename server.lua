@@ -39,6 +39,14 @@ local function init()
     end
 end
 
+--- Function to handle cleanup when the resource stops
+local function onStop()
+    for _, zone in pairs(server.zones) do
+        zone:remove()
+    end
+    server.zones = {}
+end
+
 --- [[ Callbacks ]]
 lib.callback.register('sp_dutyzone:toggleDuty', function(source, group, dutyType, zoneName)
     local source = source
@@ -73,35 +81,47 @@ lib.callback.register('sp_dutyzone:toggleDuty', function(source, group, dutyType
     if not zone then
         return false, locale('error.invalid_zone', zoneName)
     end
-    if zone then
-        -- Get the player's coordinates
-        local coords = vec3(character.PlayerData.position.x, character.PlayerData.position.y,
-            character.PlayerData.position.z)
-        -- Check if the zone group is valid
-        if not groups or not groups[zone.group] then
-            return false, locale('error.invalid_group_zone', zone.group, zone.name)
-        end
-        -- Check if the player is in the zone
-        if zone:contains(coords) then
-            -- If the player is in the zone, toggle the duty
-            Qbox:SetJob(source, group, grade)
-            if dutyType == 'on' then
-                -- If the duty type is 'on', set the job duty to true
-                Qbox:SetJobDuty(source, true)
-                return true, locale('duty.toggled_on', source, group, grade)
-            elseif dutyType == 'off' then
-                -- If the duty type is 'off', set the job duty to false
-                Qbox:SetJobDuty(source, false)
-                return true, locale('duty.toggled_off', source, group, grade)
-            else
-                -- If the duty type is invalid, return an error
-                return false, locale('error.invalid_duty_type', dutyType)
-            end
+    -- Get the player's coordinates
+    local coords = vec3(character.PlayerData.position.x, character.PlayerData.position.y,
+        character.PlayerData.position.z)
+    -- Check if the zone group is valid
+    if not groups or not groups[zone.group] then
+        return false, locale('error.invalid_group_zone', zone.group, zone.name)
+    end
+    -- Check if the player is in the zone
+    if zone:contains(coords) then
+        -- If the player is in the zone, toggle the duty
+        Qbox:SetJob(source, group, grade)
+        if dutyType == 'on' then
+            -- If the duty type is 'on', set the job duty to true
+            Qbox:SetJobDuty(source, true)
+            return true, locale('duty.toggled_on', source, group, grade)
+        elseif dutyType == 'off' then
+            -- If the duty type is 'off', set the job duty to false
+            Qbox:SetJobDuty(source, false)
+            return true, locale('duty.toggled_off', source, group, grade)
         else
-            -- If the player is not in the zone, return an error
-            return false, locale('error.not_in_zone')
+            -- If the duty type is invalid, return an error
+            return false, locale('error.invalid_duty_type', dutyType)
         end
+    else
+        -- If the player is not in the zone, return an error
+        return false, locale('error.not_in_zone')
     end
 end)
 
-init()
+--- [[ Initialization ]]
+
+AddEventHandler('onResourceStart', function(resource)
+    if resource == GetCurrentResourceName() then
+        init()
+    end
+end)
+
+--- [[ Cleanup ]]
+
+AddEventHandler('onResourceStop', function(resource)
+    if resource == GetCurrentResourceName() then
+        onStop()
+    end
+end)
