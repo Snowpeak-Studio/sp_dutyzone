@@ -6,8 +6,6 @@ client = {
 local Qbox = exports.qbx_core
 local Config = require 'data.config'
 
-
-
 ---[[ Functions ]]
 
 --- Function to handle entering a duty zone
@@ -20,10 +18,7 @@ function OnEnter(self)
         return
     end
     local result, message = lib.callback.await('sp_dutyzone:toggleDuty', 1000, self.group, 'on', self.name)
-    if not result then
-        error(message or locale('error.duty_failed'))
-        return
-    elseif result then
+    if result then
         local jobData = QBX.PlayerData.job
         lib.notify({
             title = locale('duty.title'),
@@ -31,6 +26,8 @@ function OnEnter(self)
             type = 'success',
             position = 'top-right',
         })
+    else
+        return error(message or 'Failed to toggle duty')
     end
 end
 
@@ -44,10 +41,7 @@ function OnExit(self)
         return
     end
     local result, message = lib.callback.await('sp_dutyzone:toggleDuty', 1000, self.group, 'off', self.name)
-    if not result then
-        error(message or 'Failed to toggle duty')
-        return
-    elseif result then
+    if result then
         local jobData = QBX.PlayerData.job
         lib.notify({
             title = locale('duty.title'),
@@ -55,6 +49,8 @@ function OnExit(self)
             type = 'error',
             position = 'top-right',
         })
+    else
+        return error(message or 'Failed to toggle duty')
     end
 end
 
