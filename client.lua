@@ -6,6 +6,8 @@ client = {
 local Qbox = exports.qbx_core
 local Config = require 'data.config'
 
+
+
 ---[[ Functions ]]
 
 --- Function to handle entering a duty zone
@@ -18,17 +20,17 @@ function OnEnter(self)
         return
     end
     local result, message = lib.callback.await('sp_dutyzone:toggleDuty', 1000, self.group, 'on', self.name)
-    if result then
-        local jobData = QBX.PlayerData.job
-        lib.notify({
-            title = locale('duty.title'),
-            description = locale('duty.on', jobData?.label, jobData?.grade.name),
-            type = 'success',
-            position = 'top-right',
-        })
-    else
-        return error(message or 'Failed to toggle duty')
+    if not result then
+        return error(message or locale('error.duty_failed'))
     end
+    local jobData = QBX.PlayerData.job
+    lib.notify({
+        title = locale('duty.title'),
+        description = locale('duty.on', jobData?.label, jobData?.grade.name),
+        type = 'success',
+        position = 'top-right',
+    })
+
 end
 
 --- Function to handle exiting a duty zone
@@ -41,17 +43,16 @@ function OnExit(self)
         return
     end
     local result, message = lib.callback.await('sp_dutyzone:toggleDuty', 1000, self.group, 'off', self.name)
-    if result then
-        local jobData = QBX.PlayerData.job
-        lib.notify({
-            title = locale('duty.title'),
-            description = locale('duty.off', jobData?.label, jobData?.grade.name),
-            type = 'error',
-            position = 'top-right',
-        })
-    else
+    if not result then
         return error(message or 'Failed to toggle duty')
     end
+    local jobData = QBX.PlayerData.job
+    lib.notify({
+        title = locale('duty.title'),
+        description = locale('duty.off', jobData?.label, jobData?.grade.name),
+        type = 'error',
+        position = 'top-right',
+    })
 end
 
 --- Function to check if the player is inside a duty zone Is a noop
