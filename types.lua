@@ -1,3 +1,5 @@
+---@meta
+
 ---@class DutyZone
 ---@field name string The name of the duty zone
 ---@field group string The group this duty zone belongs to
