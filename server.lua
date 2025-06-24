@@ -89,24 +89,25 @@ lib.callback.register('sp_dutyzone:toggleDuty', function(source, group, dutyType
         return false, locale('error.invalid_group_zone', zone.group, zone.name)
     end
     -- Check if the player is in the zone
-    if zone:contains(coords) then
-        -- If the player is in the zone, toggle the duty
-        Qbox:SetJob(source, group, grade)
-        if dutyType == 'on' then
+
+    -- If the player is in the zone, toggle the duty
+    Qbox:SetJob(source, group, grade)
+    if dutyType == 'on' then
+        if zone:contains(coords) then
             -- If the duty type is 'on', set the job duty to true
             Qbox:SetJobDuty(source, true)
             return true, locale('duty.toggled_on', source, group, grade)
-        elseif dutyType == 'off' then
-            -- If the duty type is 'off', set the job duty to false
-            Qbox:SetJobDuty(source, false)
-            return true, locale('duty.toggled_off', source, group, grade)
         else
-            -- If the duty type is invalid, return an error
-            return false, locale('error.invalid_duty_type', dutyType)
+            -- If the player is not in the zone, return an error
+            return false, locale('error.not_in_zone')
         end
+    elseif dutyType == 'off' then
+        -- If the duty type is 'off', set the job duty to false
+        Qbox:SetJobDuty(source, false)
+        return true, locale('duty.toggled_off', source, group, grade)
     else
-        -- If the player is not in the zone, return an error
-        return false, locale('error.not_in_zone')
+        -- If the duty type is invalid, return an error
+        return false, locale('error.invalid_duty_type', dutyType)
     end
 end)
 
